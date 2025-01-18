@@ -5,6 +5,11 @@ import sokol.sapp
 
 import lib.std { Color }
 
+pub enum TextAlignment as int {
+	left
+	center
+	right
+}
 
 @[heap] @[UIC]
 pub struct Button {
@@ -28,6 +33,7 @@ pub struct Button {
 	pressed_fn                fn ()              = unsafe { nil }
 	
 	text_size                 int
+	text_align                TextAlignment      = .left
 	text                      string
 	
 	text_color                Color
@@ -38,18 +44,36 @@ pub struct Button {
 
 // Draws text in given size at given position
 pub fn (button Button) draw(mut ctx &gg.Context) {
+	// Button BG
 	ctx.draw_rounded_rect_filled(
 		f32(button.pos.x), f32(button.pos.y),
 		f32(button.size.x), f32(button.size.y),
 		f32(button.rounding),
 		button.bg_color.get_gx()
 	)
-	ctx.draw_text(
-		int(button.pos.x + button.margin), int(button.pos.y + button.size.y * 0.5),
-		button.text,
+	
+	// Button Text
+	// TODO : Use 'ctx.set_text_style'
+	ctx.set_text_cfg(
 		color:            button.text_color.get_gx()
 		size:             button.text_size
 		vertical_align:   .middle
+	)
+	
+	x_pos := match button.text_align {
+		.left {
+			button.margin
+		}
+		.center {
+			button.size.x / 2.0 - f64(ctx.text_width(button.text)) / 2.0
+		}
+		.right {
+			button.size.x - f64(ctx.text_width(button.text)) - button.margin
+		}
+	}
+	ctx.draw_text_default(
+		int(button.pos.x + x_pos), int(button.pos.y + button.size.y * 0.5),
+		button.text
 		// max_width:   int(label.size.x)
 	)
 }

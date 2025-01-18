@@ -4,7 +4,7 @@ import gg
 
 import lib.geom { Vec2 }
 import lib.std { Color }
-import lib.ui { UI,  Component, Panel, Label, VBox, RimBox, Button }
+import lib.ui { UI,  Component,  Panel, Label, VBox, HBox, RimBox, Button }
 
 struct App {
 	mut:
@@ -23,6 +23,7 @@ fn main() {
 		event_fn:     event
 		init_fn:      init
 		user_data:    app
+		sample_count: 8
 	)
 	app.ctx.run()
 }
@@ -76,18 +77,46 @@ fn init(mut app App) {
 									text: "Print 'Hello World!'"
 									pressed_fn: fn () { println("Hello World!") }
 								},
-								Label{
-									ref: "screen_size_txt"
-									size: Vec2{100, 24}
-									text: "Screen size : ???"
-									classes: [".dark"]
+								HBox{
+									pos: Vec2{0, 0}
+									size: Vec2{600, 250}
+									children: [
+										VBox{
+											pos: Vec2{0, 0}
+											size: Vec2{100, 400}
+											children: [
+												Button{
+													size: Vec2{0, 24}
+													text: "'A'"
+													pressed_fn: fn () { println("A") }
+													text_align: .left
+												},
+												Button{
+													size: Vec2{0, 24}
+													text: "'B'"
+													pressed_fn: fn () { println("B") }
+													text_align: .center
+												},
+												Button{
+													size: Vec2{0, 24}
+													text: "'C'"
+													pressed_fn: fn () { println("C") }
+													text_align: .right
+												},
+											]
+										},
+										Panel{
+											size: Vec2{500, 24}
+											color: (style.get_style_value("Panel", "color", []) or { Color{} } as Color).darken(0.05)
+										},
+									]
 								},
 							]
-						}
+						},
 					]
-				}
+				},
 			]
-		}
+		},
 	]
 	app.ui.update_refs()
 	// println(app.ui.refs)

@@ -16,6 +16,10 @@
         "margin": "--spacing"
     },
     
+    "HBox": {
+        "margin": "--spacing"
+    },
+    
     "RimBox": {
         "margin": "--spacing"
     },
