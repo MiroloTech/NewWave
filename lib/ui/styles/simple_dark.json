@@ -1,0 +1,50 @@
+{
+    "-": {
+        "--rounding": 8.0,
+        "--spacing": 8.0,
+        "--main-color": "#ff79c6",
+        "--main-color-80": "#c95999",
+        "--bg-color": "#282a36",
+        "--text-color": "#ffffff",
+        "--text-color-dark": "#222222",
+        "--font-size": 24
+    },
+    
+    
+    
+    "VBox": {
+        "margin": "--spacing"
+    },
+    
+    "RimBox": {
+        "margin": "--spacing"
+    },
+    
+    
+    "Label": {
+        "color": "--text-color",
+        "text_size": "--font-size",
+        "text": "TEST"
+    },
+    
+    "Panel": {
+        "color": "--bg-color",
+        "rounding": "--rounding"
+    },
+    
+    
+    "Button": {
+        "rounding": "--rounding",
+        "margin": 8.0,
+        
+        "text_color_normal": "--text-color",
+        "text_color_hover": "--text-color",
+        "text_color_pressed": "--text-color",
+        
+        "bg_color_normal": "--main-color",
+        "bg_color_hover": "--main-color",
+        "bg_color_pressed": "--main-color-80",
+        
+        "text_size": "--font-size"
+    }
+}
