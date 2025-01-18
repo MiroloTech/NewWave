@@ -119,10 +119,10 @@ pub fn get_all_children(parent Component) []Component {
 
 
 
-pub fn apply_style_to_type[T](mut obj T, style Style) {
+pub fn apply_style_to_type[T](mut obj T, style Style, classes []string) {
 	obj_tag := typeof(obj).name.split(".")[1] or { typeof(obj).name.replace("&", "") }
 	$for field in obj.fields {
-		if value := style.get_value_of_type(obj_tag, field.name) {
+		if value := style.get_style_value(obj_tag, field.name, classes) {
 			// Make sure, that defualt Component values can't be set
 			mut value_invalid := false
 			$for component_field in Component.fields {
@@ -184,7 +184,6 @@ pub fn (mut ui UI) set_ref_data[T, G](ref string, field_name string, value T) {
 	if ref in ui.refs.keys() {
 		for mut cmp in ui.refs[ref] {
 			if mut cmp is G {
-				println("Component ${typeof(cmp).name} is examined for abillity to set field ${field_name} to ${value}")
 				$for field in cmp.fields {
 					// Check, if the value setting is adressed to the embedded Basic struct of a Component, and if so, access and check all fields in that embedded Basic struct
 					$if field.typ is Basic {

@@ -27,5 +27,5 @@ pub fn (panel Panel) draw(mut ctx &gg.Context) {
 }
 
 pub fn (mut panel Panel) apply_style(style Style) {
-	apply_style_to_type(mut panel, style)
+	apply_style_to_type(mut panel, style, panel.classes)
 }

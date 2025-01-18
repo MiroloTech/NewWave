@@ -33,5 +33,5 @@ pub fn (mut vbox VBox) format() {
 
 
 pub fn (mut vbox VBox) apply_style(style Style) {
-	apply_style_to_type(mut vbox, style)
+	apply_style_to_type(mut vbox, style, vbox.classes)
 }

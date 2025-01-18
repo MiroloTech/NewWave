@@ -23,8 +23,7 @@
     
     "Label": {
         "color": "--text-color",
-        "text_size": "--font-size",
-        "text": "TEST"
+        "text_size": "--font-size"
     },
     
     "Panel": {
@@ -46,5 +45,14 @@
         "bg_color_pressed": "--main-color-80",
         
         "text_size": "--font-size"
+    },
+    
+    
+    ".hard-corners": {
+        "rounding": 0.0
+    },
+    
+    "Label.dark": {
+        "color": "#000000"
     }
 }

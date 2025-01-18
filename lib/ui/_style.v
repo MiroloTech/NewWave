@@ -6,13 +6,14 @@ import x.json2 as json
 import lib.std { Color }
 
 
-type UIType = string | int | f64 | bool | Color
+type UIType = string | int | f64 | bool | Color | Error
 
 pub struct Style {
 	pub mut:
 	src        string
 	data       map[string]map[string]UIType
 	variables  map[string]UIType
+	classes    map[string]map[string]UIType
 }
 
 pub fn Style.load_style(path string) !Style {
@@ -35,24 +36,87 @@ pub fn Style.load_style(path string) !Style {
 	
 	for raw_obj, raw_data in components {
 		obj := raw_obj.str()
-		style.data[obj] = map[string]UIType{}
+		if obj == "" { continue }
 		
-		for raw_dtag, raw_dval in raw_data.as_map() {
-			mut val := json_any_to_uitype(raw_dval) or { continue } // TODO : Make this warning for invalid parse
-			if mut val is string {
-				if val.starts_with("--") {
-					val = style.variables[val] or { continue } // TODO : Make this warning for non-existing style variable
+		if obj.contains(".") {
+			if obj.len <= 1 { continue }
+			
+			style.classes[obj] = map[string]UIType{}
+			
+			for raw_dtag, raw_dval in raw_data.as_map() {
+				mut val := json_any_to_uitype(raw_dval) or { continue } // TODO : Make this warning for invalid parse
+				if mut val is string {
+					if val.starts_with("--") {
+						val = style.variables[val] or { continue } // TODO : Make this warning for non-existing style variable
+					}
 				}
+				style.classes[obj][raw_dtag] = val
 			}
-			style.data[obj][raw_dtag] = val
+		}
+		else {
+			style.data[obj] = map[string]UIType{}
+			
+			for raw_dtag, raw_dval in raw_data.as_map() {
+				mut val := json_any_to_uitype(raw_dval) or { continue } // TODO : Make this warning for invalid parse
+				if mut val is string {
+					if val.starts_with("--") {
+						val = style.variables[val] or { continue } // TODO : Make this warning for non-existing style variable
+					}
+				}
+				style.data[obj][raw_dtag] = val
+			}
 		}
 	}
 	
 	return style
 }
 
-pub fn (style Style) get_value_of_type(typ string, field_name string) !UIType {
-	return style.data[typ][field_name] or { return error("Unknown type or field name for Style Data.") }
+
+pub fn (style Style) get_style_value(typ string, field_name string, classes []string) !UIType {
+	// 3. Priority - type-specific value
+	mut valid := false
+	mut value := UIType(Error{})
+	if v := style.data[typ][field_name] {
+		value = v
+		valid = true
+	}
+	
+	
+	// 2. Priority - generic classes
+	for class_name, class in style.classes {
+		if class_name.starts_with(".") {
+			if class_name in classes {
+				for key, val in class {
+					if key == field_name {
+						if val.type_name() == value.type_name() {
+							value = val
+							valid = true
+						}
+					}
+				}
+			}
+		}
+	}
+	// 1. Priority - type-specific classes
+	for class_name, class in style.classes {
+		if class_name.starts_with(typ) {
+			if ("." + class_name.split(".")[1] or { "" }) in classes {
+				for key, val in class {
+					if key == field_name {
+						if val.type_name() == value.type_name() {
+							value = val
+							valid = true
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if !valid {
+		return error("Unknown type or field name for Style Data.")
+	}
+	return value
 }
 
 
@@ -73,9 +137,7 @@ fn json_any_to_uitype(v json.Any) !UIType {
 			}
 			return UIType(v)
 		}
-		else {
-			
-		}
+		else { }
 	}
 	return error("Invalid type : ${typeof(v).name}")
 }

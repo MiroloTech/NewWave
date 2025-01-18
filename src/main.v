@@ -39,6 +39,7 @@ fn init(mut app App) {
 			rounding: 0.001
 			pos: Vec2{0, 0}
 			size: screen_size
+			classes: [".hard-corners"]
 		},
 		RimBox{
 			pos: Vec2{0, 0}
@@ -46,10 +47,9 @@ fn init(mut app App) {
 			margin: 20.0
 			children: [
 				Panel{
-					color: (style.get_value_of_type("Panel", "color") or { Color{} } as Color).darken(0.03)
+					color: (style.get_style_value("Panel", "color", []) or { Color{} } as Color).darken(0.03)
 					pos: Vec2{0, 0}
 					size: Vec2{100, 50}
-					class: "bg"
 				},
 				RimBox{
 					margin: 20.0
@@ -80,6 +80,7 @@ fn init(mut app App) {
 									ref: "screen_size_txt"
 									size: Vec2{100, 24}
 									text: "Screen size : ???"
+									classes: [".dark"]
 								},
 							]
 						}
@@ -115,3 +116,12 @@ fn frame(mut app App) {
 	app.ui.draw(mut app.ctx)
 	// app.ui.draw_debug(mut app.ctx)
 }
+
+/*
+TEMP:
+
+Behaviour for classes:
+
+During styleisation, first the struct-exclusive style values are set, and then for every extra defined style class in the object, the style sheet applies all possible valid values of that class into the object's style, prefering type - specific classes, if the type of the object matches the type of the class
+
+*/

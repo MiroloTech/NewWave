@@ -32,5 +32,5 @@ pub fn (label Label) draw(mut ctx &gg.Context) {
 
 
 pub fn (mut label Label) apply_style(style Style) {
-	apply_style_to_type(mut label, style)
+	apply_style_to_type(mut label, style, label.classes)
 }

@@ -32,5 +32,5 @@ pub fn (mut rimbox RimBox) format() {
 
 
 pub fn (mut rimbox RimBox) apply_style(style Style) {
-	apply_style_to_type(mut rimbox, style)
+	apply_style_to_type(mut rimbox, style, rimbox.classes)
 }

@@ -80,5 +80,5 @@ pub fn (mut button Button) update(mut ctx &gg.Context) {
 
 
 pub fn (mut button Button) apply_style(style Style) {
-	apply_style_to_type(mut button, style)
+	apply_style_to_type(mut button, style, button.classes)
 }
