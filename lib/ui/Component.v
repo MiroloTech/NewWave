@@ -8,6 +8,7 @@ import lib.geom { Vec2 }
 pub struct Basic {
 	pub mut:
 	class        string
+	ref          string
 	pos          Vec2
 	size         Vec2
 }
@@ -23,6 +24,7 @@ pub interface Component {
 	mut:
 	pos          Vec2
 	size         Vec2
+	ref          string
 	class        string               // TODO : Implement this with styling
 	typ          ComponentType
 	

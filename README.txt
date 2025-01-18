@@ -5,12 +5,14 @@ Features:
     - Expandable file structure
     - custom style sheet implementation in .json format, with the power of style variables.
     - Object oriented component structure
+    - Easy referencing of objects through the ui struct to selected components.
 
 Roadmap:
-    - Easy referencing of objects through the ui struct to selected components.
     - More component - individual formatting settings ( text orientation, etc. )
     - More components -> Text Input, Switch, Slider
 
 TODO:
     - Add more commentary to internal functions and components, explaining what they are doing
-    - Add Option for internal Component variables to not be able to be set through the style sheet 
+    - Add Option for internal Component variables to not be able to be set through the style sheet
+    - Add font support for all text components
+    - Get value function for references

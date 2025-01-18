@@ -4,7 +4,7 @@ import gg
 
 import lib.geom { Vec2 }
 import lib.std { Color }
-import lib.ui { UI, Panel, Label, VBox, RimBox, Button }
+import lib.ui { UI,  Component, Panel, Label, VBox, RimBox, Button }
 
 struct App {
 	mut:
@@ -35,6 +35,8 @@ fn init(mut app App) {
 	screen_size := Vec2{1600, 900}
 	app.ui.components << [
 		Panel{
+			ref: "bg"
+			rounding: 0.001
 			pos: Vec2{0, 0}
 			size: screen_size
 		},
@@ -47,6 +49,7 @@ fn init(mut app App) {
 					color: (style.get_value_of_type("Panel", "color") or { Color{} } as Color).darken(0.03)
 					pos: Vec2{0, 0}
 					size: Vec2{100, 50}
+					class: "bg"
 				},
 				RimBox{
 					margin: 20.0
@@ -55,6 +58,11 @@ fn init(mut app App) {
 							pos: Vec2{0, 0}
 							size: Vec2{600, 400}
 							children: [
+								Label{
+									ref: "screen_size_txt"
+									size: Vec2{100, 24}
+									text: "Screen size : ???"
+								},
 								Label{
 									size: Vec2{100, 24}
 									text: "Apple"
@@ -65,8 +73,13 @@ fn init(mut app App) {
 								},
 								Button{
 									size: Vec2{100, 24}
-									text: "Print Hello World!"
+									text: "Print 'Hello World!'"
 									pressed_fn: fn () { println("Hello World!") }
+								},
+								Label{
+									ref: "screen_size_txt"
+									size: Vec2{100, 24}
+									text: "Screen size : ???"
 								},
 							]
 						}
@@ -75,6 +88,8 @@ fn init(mut app App) {
 			]
 		}
 	]
+	app.ui.update_refs()
+	// println(app.ui.refs)
 }
 
 fn event(mut ev gg.Event, mut app App) {
@@ -83,6 +98,20 @@ fn event(mut ev gg.Event, mut app App) {
 
 
 fn frame(mut app App) {
+	gg_screen_size := gg.window_size()
+	screen_size := Vec2{f64(gg_screen_size.width), f64(gg_screen_size.height)}
+	
+	// Easy Way
+	app.ui.set_ref_data[Vec2,   Panel]("bg",                "size",   screen_size)
+	
+	// Open Way
+	mut screen_size_text_refs := app.ui.refs["screen_size_txt"] or { []Component{} }
+	for mut cmp in screen_size_text_refs {
+		if mut cmp is Label {
+			cmp.text = "Screen size : ${screen_size}"
+		}
+	}
+	
 	app.ui.draw(mut app.ctx)
 	// app.ui.draw_debug(mut app.ctx)
 }

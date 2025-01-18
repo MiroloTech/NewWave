@@ -12,8 +12,8 @@ pub struct Panel {
 	typ          ComponentType         = .object
 	// self         any                   = Panel{}
 	
-	color        Color                                             @[style: panel_color]
-	rounding     f64                                               @[style: panel_rounding]
+	color        Color
+	rounding     f64
 }
 
 // Draws a styleized rectangle panel at given position and size
