@@ -119,47 +119,6 @@ pub fn get_all_children(parent Component) []Component {
 
 
 
-pub fn apply_style_to_type[T](mut obj T, style Style, classes []string) {
-	obj_tag := typeof(obj).name.split(".")[1] or { typeof(obj).name.replace("&", "") }
-	$for field in obj.fields {
-		if value := style.get_style_value(obj_tag, field.name, classes) {
-			// Make sure, that defualt Component values can't be set
-			mut value_invalid := false
-			$for component_field in Component.fields {
-				if field.name == component_field.name { // field.typ == component_field.typ && 
-					value_invalid = true
-				}
-			}
-			if !value_invalid {
-				$if field.typ is string {
-					if obj.$(field.name) == "" {
-						obj.$(field.name) = value as string
-					}
-				}
-				$if field.typ is Color {
-					if obj.$(field.name) == Color{} {
-						obj.$(field.name) = value as Color
-					}
-				}
-				$if field.typ is int {
-					if obj.$(field.name) == 0 {
-						obj.$(field.name) = value as int
-					}
-				}
-				$if field.typ is f64 {
-					if obj.$(field.name) == 0.0 {
-						obj.$(field.name) = value as f64
-					}
-				}
-				$if field.typ is bool {
-					if obj.$(field.name) == false {
-						obj.$(field.name) = value as bool
-					}
-				}
-			}
-		}
-	}
-}
 
 
 // --- REFERENCES ---

@@ -54,6 +54,7 @@ fn init(mut app App) {
 				},
 				RimBox{
 					margin: 20.0
+					size: Vec2{450.0, screen_size.y}
 					children: [
 						VBox{
 							pos: Vec2{0, 0}
@@ -111,6 +112,10 @@ fn init(mut app App) {
 										},
 									]
 								},
+								Label{
+									size: Vec2{100, 24}
+									text: "Cucumber"
+								},
 							]
 						},
 					]
@@ -119,7 +124,6 @@ fn init(mut app App) {
 		},
 	]
 	app.ui.update_refs()
-	// println(app.ui.refs)
 }
 
 fn event(mut ev gg.Event, mut app App) {
@@ -128,13 +132,14 @@ fn event(mut ev gg.Event, mut app App) {
 
 
 fn frame(mut app App) {
+	// Referencing:
 	gg_screen_size := gg.window_size()
 	screen_size := Vec2{f64(gg_screen_size.width), f64(gg_screen_size.height)}
 	
-	// Easy Way
+	// > Easy Way
 	app.ui.set_ref_data[Vec2,   Panel]("bg",                "size",   screen_size)
 	
-	// Open Way
+	// > Open Way
 	mut screen_size_text_refs := app.ui.refs["screen_size_txt"] or { []Component{} }
 	for mut cmp in screen_size_text_refs {
 		if mut cmp is Label {
@@ -142,15 +147,8 @@ fn frame(mut app App) {
 		}
 	}
 	
+	
+	// Drawing:
 	app.ui.draw(mut app.ctx)
-	// app.ui.draw_debug(mut app.ctx)
+	// app.ui.draw_debug(mut app.ctx) // > Debu outlines of every component
 }
-
-/*
-TEMP:
-
-Behaviour for classes:
-
-During styleisation, first the struct-exclusive style values are set, and then for every extra defined style class in the object, the style sheet applies all possible valid values of that class into the object's style, prefering type - specific classes, if the type of the object matches the type of the class
-
-*/

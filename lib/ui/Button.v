@@ -16,7 +16,6 @@ pub struct Button {
 	Basic
 	pub mut:
 	typ                       ComponentType         = .reactor
-	// self         any                   = Label{}
 	
 	rounding                  f64
 	margin                    f64

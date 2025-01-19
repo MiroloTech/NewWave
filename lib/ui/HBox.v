@@ -7,7 +7,6 @@ pub struct HBox {
 	Basic
 	pub mut:
 	typ          ComponentType         = .container
-	// self         any                   = VBox{}
 	children     []Component
 	
 	margin       f64
@@ -22,8 +21,19 @@ pub fn (mut hbox HBox) format() {
 		}
 	}
 	
-	// Sort by Y offset
 	mut x_offset := 0.0
+	
+	// Clamp all overlapping components in HBox
+	for mut c in hbox.children {
+		if x_offset + c.size.x > hbox.size.x {
+			c.size.x = hbox.size.x - x_offset
+			if c.size.x < 0.0 { c.size.x = 0.0 }
+		}
+		x_offset += c.size.x + hbox.margin
+	}
+	
+	// Sort by Y offset
+	x_offset = 0.0
 	for mut c in hbox.children {
 		c.pos = hbox.pos + Vec2{x_offset, 0.0}
 		c.size.y = hbox.size.y

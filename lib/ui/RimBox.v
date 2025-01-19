@@ -7,7 +7,6 @@ pub struct RimBox {
 	Basic
 	pub mut:
 	typ          ComponentType         = .container
-	// self         any                   = RimBox{}
 	children     []Component
 	
 	margin       f64

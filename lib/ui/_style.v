@@ -16,6 +16,7 @@ pub struct Style {
 	classes    map[string]map[string]UIType
 }
 
+// Returns a fully parsed style struct, given a path to a suitable .json style file
 pub fn Style.load_style(path string) !Style {
 	src := os.read_file(path) or { return error("Can't read raw text data from Style file : ${err} ") }
 	
@@ -72,6 +73,8 @@ pub fn Style.load_style(path string) !Style {
 }
 
 
+// Given an object name and field name of the searched value, and an optional array of considered style classes ( or [] ),
+// this function returns a suitable UIType ( or error, if no valud value is found )
 pub fn (style Style) get_style_value(typ string, field_name string, classes []string) !UIType {
 	// 3. Priority - type-specific value
 	mut valid := false
@@ -120,6 +123,51 @@ pub fn (style Style) get_style_value(typ string, field_name string, classes []st
 }
 
 
+// Applies all possible styleization values into the given object of any type, given the object, a style struct and an optional list of classes ( or [] )
+pub fn apply_style_to_type[T](mut obj T, style Style, classes []string) {
+	obj_tag := typeof(obj).name.split(".")[1] or { typeof(obj).name.replace("&", "") }
+	$for field in obj.fields {
+		if value := style.get_style_value(obj_tag, field.name, classes) {
+			// Make sure, that defualt Component values can't be set
+			mut value_invalid := false
+			$for component_field in Component.fields {
+				if field.name == component_field.name { // field.typ == component_field.typ && 
+					value_invalid = true
+				}
+			}
+			if !value_invalid {
+				$if field.typ is string {
+					if obj.$(field.name) == "" {
+						obj.$(field.name) = value as string
+					}
+				}
+				$if field.typ is Color {
+					if obj.$(field.name) == Color{} {
+						obj.$(field.name) = value as Color
+					}
+				}
+				$if field.typ is int {
+					if obj.$(field.name) == 0 {
+						obj.$(field.name) = value as int
+					}
+				}
+				$if field.typ is f64 {
+					if obj.$(field.name) == 0.0 {
+						obj.$(field.name) = value as f64
+					}
+				}
+				$if field.typ is bool {
+					if obj.$(field.name) == false {
+						obj.$(field.name) = value as bool
+					}
+				}
+			}
+		}
+	}
+}
+
+
+// Takes in a json - specific any type and turns it into any valid version of UIType, or returns an error if the json type is unsupported
 fn json_any_to_uitype(v json.Any) !UIType {
 	match v {
 		bool {

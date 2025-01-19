@@ -10,7 +10,6 @@ pub struct Panel {
 	Basic
 	pub mut:
 	typ          ComponentType         = .object
-	// self         any                   = Panel{}
 	
 	color        Color
 	rounding     f64

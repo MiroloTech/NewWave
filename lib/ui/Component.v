@@ -25,7 +25,7 @@ pub interface Component {
 	pos          Vec2
 	size         Vec2
 	ref          string
-	classes      []string               // TODO : Implement this with styling
+	classes      []string
 	typ          ComponentType
 	
 	apply_style(style Style)

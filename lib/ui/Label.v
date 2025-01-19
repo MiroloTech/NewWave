@@ -10,7 +10,6 @@ pub struct Label {
 	Basic
 	pub mut:
 	typ          ComponentType         = .object
-	// self         any                   = Label{}
 	
 	color        Color
 	text_size    int
