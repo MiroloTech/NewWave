@@ -18,7 +18,7 @@ pub struct Label {
 }
 
 // Draws text in given size at given position
-pub fn (label Label) draw(mut ctx &gg.Context) {
+pub fn (label Label) draw(mut ctx gg.Context) {
 	ctx.draw_text(
 		int(label.pos.x), int(label.pos.y + label.size.y * 0.5),
 		label.text,

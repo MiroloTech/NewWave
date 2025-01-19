@@ -42,7 +42,7 @@ pub struct Button {
 }
 
 // Draws text in given size at given position
-pub fn (button Button) draw(mut ctx &gg.Context) {
+pub fn (button Button) draw(mut ctx gg.Context) {
 	// Button BG
 	ctx.draw_rounded_rect_filled(
 		f32(button.pos.x), f32(button.pos.y),
@@ -77,7 +77,7 @@ pub fn (button Button) draw(mut ctx &gg.Context) {
 	)
 }
 
-pub fn (mut button Button) update(mut ctx &gg.Context) {
+pub fn (mut button Button) update(mut ctx gg.Context) {
 	button.text_color = button.text_color_normal
 	button.bg_color = button.bg_color_normal
 	

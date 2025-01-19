@@ -16,7 +16,7 @@ pub struct Panel {
 }
 
 // Draws a styleized rectangle panel at given position and size
-pub fn (panel Panel) draw(mut ctx &gg.Context) {
+pub fn (panel Panel) draw(mut ctx gg.Context) {
 	ctx.draw_rounded_rect_filled(
 		f32(panel.pos.x), f32(panel.pos.y),
 		f32(panel.size.x), f32(panel.size.y),

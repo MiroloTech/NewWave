@@ -13,7 +13,7 @@ pub struct UI {
 	refs              map[string][]Component
 }
 
-pub fn (mut ui UI) draw(mut ctx &gg.Context) {
+pub fn (mut ui UI) draw(mut ctx gg.Context) {
 	// Clear and reset screen to allow for screenclearing
 	ctx.begin()
 	ctx.end()
@@ -53,7 +53,7 @@ pub fn (mut ui UI) draw(mut ctx &gg.Context) {
 	ctx.end(how: .passthru)
 }
 
-pub fn (ui UI) draw_debug(mut ctx &gg.Context) {
+pub fn (ui UI) draw_debug(mut ctx gg.Context) {
 	// Allow for drawing bounds of every container and obnject in seperate draw call
 	ctx.begin()
 	for c in ui.get_all_components() {
@@ -75,8 +75,10 @@ pub fn (ui UI) get_all_objects() []Object {
 	mut objects := []Object{}
 	
 	for c in ui.get_all_components() {
-		if c.typ == .object {
-			objects << (c as Object)
+		if c is Object {
+			if c.typ == .object { // TDODO : Remove this to just use smart casting ( remove .typ from everything if possible )
+				objects << c
+			}
 		}
 	}
 	
@@ -87,8 +89,10 @@ pub fn (ui UI) get_all_reactors() []Reactor {
 	mut reactors := []Reactor{}
 	
 	for c in ui.get_all_components() {
-		if c.typ == .reactor {
-			reactors << (c as Reactor)
+		if c is Reactor {
+			if c.typ == .reactor {
+				reactors << c
+			}
 		}
 	}
 	

@@ -13,6 +13,7 @@ struct App {
 }
 
 fn main() {
+	println("")
 	mut app := &App{}
 	app.ctx = gg.new_context(
 		bg_color:     Color.hex("#000000").get_gx()
@@ -23,7 +24,7 @@ fn main() {
 		event_fn:     event
 		init_fn:      init
 		user_data:    app
-		sample_count: 8
+		sample_count: 8   // Anti-Aliasing sample count
 	)
 	app.ctx.run()
 }

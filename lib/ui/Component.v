@@ -52,14 +52,14 @@ pub interface Container {
 pub interface Object {
 	Component
 	
-	draw(mut &gg.Context)
+	draw(mut gg.Context)
 }
 
 pub interface Reactor {
 	Component
 	
-	draw(mut &gg.Context)
+	draw(mut gg.Context)
 	
 	mut:
-	update(mut &gg.Context)
+	update(mut gg.Context)
 }
