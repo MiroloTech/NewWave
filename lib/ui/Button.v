@@ -5,17 +5,11 @@ import sokol.sapp
 
 import lib.std { Color }
 
-pub enum TextAlignment as int {
-	left
-	center
-	right
-}
-
 @[heap] @[UIC]
 pub struct Button {
 	Basic
 	pub mut:
-	typ                       ComponentType         = .reactor
+	typ                       ComponentType      = .reactor
 	
 	rounding                  f64
 	margin                    f64
@@ -28,12 +22,15 @@ pub struct Button {
 	bg_color_hover            Color
 	bg_color_pressed          Color
 	
-	pressed                   bool
+	pressed                   bool                                                       @[nostyle]
+	hovering                  bool                                                       @[nostyle]
+	last_mouse_mode           bool                                                       @[nostyle]
 	pressed_fn                fn ()              = unsafe { nil }
+	hovering_fn               fn ()              = unsafe { nil }
 	
 	text_size                 int
-	text_align                TextAlignment      = .left
-	text                      string
+	text_align                TextAlignmentH     = .left
+	text                      string                                                     @[nostyle]
 	
 	text_color                Color
 	bg_color                  Color
@@ -58,7 +55,6 @@ pub fn (button Button) draw(mut ctx gg.Context) {
 		size:             button.text_size
 		vertical_align:   .middle
 	)
-	
 	x_pos := match button.text_align {
 		.left {
 			button.margin
@@ -81,25 +77,36 @@ pub fn (mut button Button) update(mut ctx gg.Context) {
 	button.text_color = button.text_color_normal
 	button.bg_color = button.bg_color_normal
 	
-	if mouse_hover(Component(button), mut ctx) {
+	button.hovering = mouse_hover(Component(button), mut ctx)
+		
+	if button.hovering {
 		sapp.set_mouse_cursor(.pointing_hand)
-		if ctx.mouse_buttons == .left {
-			button.text_color = button.text_color_pressed
-			button.bg_color = button.bg_color_pressed
-			
-			if !button.pressed && button.pressed_fn != unsafe { nil } {
-				button.pressed_fn()
-			}
-			button.pressed = true
-		} else {
-			button.text_color = button.text_color_hover
-			button.bg_color = button.bg_color_hover
-			button.pressed = false
+		if button.hovering_fn != unsafe { nil } {
+			button.hovering_fn()
 		}
+		button.text_color = button.text_color_hover
+		button.bg_color = button.bg_color_hover
+		
+		button.pressed = ctx.mouse_buttons == .left
 	} else {
 		button.pressed = false
 	}
+	
+	if button.pressed {
+		button.text_color = button.text_color_pressed
+		button.bg_color = button.bg_color_pressed
+	}
+	
+	if button.pressed && button.last_mouse_mode == false {
+		if button.pressed_fn != unsafe { nil } {
+			button.pressed_fn()
+		}
+	}
+	
+	button.last_mouse_mode = ctx.mouse_buttons == .left
 }
+
+pub fn (mut button Button) event(_ &gg.Event) {  }
 
 
 pub fn (mut button Button) apply_style(style Style) {

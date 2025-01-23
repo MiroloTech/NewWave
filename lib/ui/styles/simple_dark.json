@@ -5,6 +5,7 @@
         "--main-color": "#ff79c6",
         "--main-color-80": "#c95999",
         "--bg-color": "#282a36",
+        "--bg-color-dark": "#21222c",
         "--text-color": "#ffffff",
         "--text-color-dark": "#222222",
         "--font-size": 24
@@ -47,6 +48,16 @@
         "bg_color_normal": "--main-color",
         "bg_color_hover": "--main-color",
         "bg_color_pressed": "--main-color-80",
+        
+        "text_size": "--font-size"
+    },
+    
+    "TextInput": {
+        "rounding": "--rounding",
+        "margin": 8.0,
+        
+        "text_color": "--text-color",
+        "bg_color": "#000000",
         
         "text_size": "--font-size"
     },

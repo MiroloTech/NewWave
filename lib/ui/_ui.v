@@ -53,6 +53,13 @@ pub fn (mut ui UI) draw(mut ctx gg.Context) {
 	ctx.end(how: .passthru)
 }
 
+pub fn (mut ui UI) event(event &gg.Event) {
+	// Update all reactors for event handled stuff
+	for mut rea in ui.get_all_reactors() {
+		rea.event(event)
+	}
+}
+
 pub fn (ui UI) draw_debug(mut ctx gg.Context) {
 	// Allow for drawing bounds of every container and obnject in seperate draw call
 	ctx.begin()

@@ -135,6 +135,8 @@ pub fn apply_style_to_type[T](mut obj T, style Style, classes []string) {
 					value_invalid = true
 				}
 			}
+			if "nostyle" in field.attrs { value_invalid = true }
+			
 			if !value_invalid {
 				$if field.typ is string {
 					if obj.$(field.name) == "" {

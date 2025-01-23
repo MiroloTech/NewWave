@@ -2,6 +2,12 @@ module ui
 
 import gg
 
+pub enum TextAlignmentH as int {
+	left
+	center
+	right
+}
+
 // This script contains several utillity functions for different UI Components, mainly for type Component itself, to handle certain UI Events
 
 // Returns true, if the current mouse position is inside the Components area

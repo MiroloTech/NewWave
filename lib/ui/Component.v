@@ -7,10 +7,10 @@ import lib.geom { Vec2 }
 // Basic UI Component struct, used for embedding in every other UI Component
 pub struct Basic {
 	pub mut:
-	classes      []string
-	ref          string
-	pos          Vec2
-	size         Vec2
+	classes      []string               @[nostyle]
+	ref          string                 @[nostyle]
+	pos          Vec2                   @[nostyle]
+	size         Vec2                   @[nostyle]
 }
 
 pub fn (mut basic Basic) apply_style(style Style) {
@@ -28,7 +28,7 @@ pub interface Component {
 	classes      []string
 	typ          ComponentType
 	
-	apply_style(style Style)
+	apply_style(Style)
 }
 
 pub enum ComponentType {
@@ -62,4 +62,5 @@ pub interface Reactor {
 	
 	mut:
 	update(mut gg.Context)
+	event(&gg.Event)
 }

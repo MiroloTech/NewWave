@@ -4,7 +4,7 @@ import gg
 
 import lib.geom { Vec2 }
 import lib.std { Color }
-import lib.ui { UI,  Component,  Panel, Label, VBox, HBox, RimBox, Button }
+import lib.ui { UI,  Component,  Panel, Label, VBox, HBox, RimBox, Button, TextInput }
 
 struct App {
 	mut:
@@ -59,7 +59,7 @@ fn init(mut app App) {
 					children: [
 						VBox{
 							pos: Vec2{0, 0}
-							size: Vec2{600, 400}
+							size: Vec2{600, 1000}
 							children: [
 								Label{
 									ref: "screen_size_txt"
@@ -116,6 +116,11 @@ fn init(mut app App) {
 								Label{
 									size: Vec2{100, 24}
 									text: "Cucumber"
+									text_align: .center
+								},
+								TextInput {
+									size: Vec2{0, 24}
+									text: "Edit Me!!!"
 								},
 							]
 						},
@@ -127,7 +132,8 @@ fn init(mut app App) {
 	app.ui.update_refs()
 }
 
-fn event(mut ev gg.Event, mut app App) {
+fn event(event &gg.Event, mut app App) {
+	app.ui.event(event)
 }
 
 
